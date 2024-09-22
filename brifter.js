@@ -1,4 +1,3 @@
-
 const LEVER_ATTR = 'data-shift-lever';
 const LEVER_SWAP = 'swap';
 const LEVER_APPEND = 'append';
@@ -7,6 +6,8 @@ const LEVER_PREPEND = 'prepend';
 const TARGET_ATTR = 'data-shift-target-id';
 const LOADING_ATTR = 'data-shift-loading-id';
 const HIDE_ONLOAD_ATTR = 'data-loading-hide-id';
+const LOCATION_HASH_ATTR = 'data-shift-popup-id';
+
 const RETAIN_INPUT_ATTR = 'data-retain-input';
 const LISTENED_ATTR = 'data-connected';
 
@@ -112,6 +113,11 @@ const handleShifting = async (form) => {
   const loadingId = form.getAttribute(LOADING_ATTR);
   const elementToHideId = form.getAttribute(HIDE_ONLOAD_ATTR);
   const inputsAndButtons = form.querySelectorAll('input, button');
+  const locationHash = form.getAttribute(LOCATION_HASH_ATTR);
+
+  if (locationHash) {
+    window.location.hash = locationHash;
+  }
 
   const targetElement = document.querySelector(targetId);
 
