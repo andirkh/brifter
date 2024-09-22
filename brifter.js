@@ -1,19 +1,18 @@
+
 const LEVER_ATTR = 'data-shift-lever';
-const TARGET_ATTR = 'data-shift-target-id';
-
-const LOADING_ATTR = 'data-shift-loading-id';
-const HIDE_ONLOAD_ATTR = 'data-loading-hide-id';
-const RETAIN_INPUT_ATTR = 'data-retain-input';
-
-const LISTENED_ATTR = 'data-connected';
-
-// Levers variant:
 const LEVER_SWAP = 'swap';
 const LEVER_APPEND = 'append';
 const LEVER_PREPEND = 'prepend';
 
-// Feedback from response header :
+const TARGET_ATTR = 'data-shift-target-id';
+const LOADING_ATTR = 'data-shift-loading-id';
+const HIDE_ONLOAD_ATTR = 'data-loading-hide-id';
+const RETAIN_INPUT_ATTR = 'data-retain-input';
+const LISTENED_ATTR = 'data-connected';
+
 const FEEDBACK_HEADER = 'X-Feedback-Message';
+const SHOW_CLASSNAME = 'b-show';
+const HIDE_CLASSNAME = 'b-hidden';
 
 const handleResponseLogic = (logic, targetElement, responseHtml) => {
   if (!targetElement) return;
@@ -48,10 +47,10 @@ const clearInputs = (elements) => {
 const showSnackbar = (message) => {
   const snackbar = document.getElementById('snackbar');
   snackbar.textContent = message;
-  snackbar.className = 'show';
+  snackbar.className = SHOW_CLASSNAME;
 
   setTimeout(() => {
-    snackbar.className = snackbar.className.replace('show', '');
+    snackbar.className = snackbar.className.replace(SHOW_CLASSNAME, '');
   }, 3000);
 }
 
@@ -60,9 +59,9 @@ const showLoading = (loadingId, state) => {
   if (!loadingElement) return;
 
   if (state === true) {
-    loadingElement.className = `${loadingElement.className} show`
+    loadingElement.className = `${loadingElement.className} ${SHOW_CLASSNAME}`
   } else if (state === false) {
-    loadingElement.className = loadingElement.className.replace('show', '').trim();
+    loadingElement.className = loadingElement.className.replace(SHOW_CLASSNAME, '').trim();
   }
 }
 
@@ -71,9 +70,9 @@ const hideElementWhenLoading = (elementToHideId, state) => {
 
   if (!hideElement) return;
   if (state === true) {
-    hideElement.className = `${hideElement.className} hidden`
+    hideElement.className = `${hideElement.className} ${HIDE_CLASSNAME}`
   } else if (state === false) {
-    hideElement.className = hideElement.className.replace('hidden', '').trim();
+    hideElement.className = hideElement.className.replace(HIDE_CLASSNAME, '').trim();
   }
 }
 
