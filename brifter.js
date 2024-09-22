@@ -102,58 +102,53 @@ const handleProgress = (loadingId, state, elementToHideId) => {
   elementToHideId && hideElementWhenLoading(elementToHideId, state);
 }
 
-const handleCablePull = async (form) => {
+const handleShifting = async (form) => {
   const formData = new FormData(form);
   const url = form.getAttribute('action');
   const method = form.getAttribute('method')?.toUpperCase() || 'POST';
   const logic = form.getAttribute(LEVER_ATTR);
   const retainInput = form.getAttribute(RETAIN_INPUT_ATTR);
   const targetId = form.getAttribute(TARGET_ATTR);
-
-  const targetElement = document.querySelector(targetId);
-
-  let fetchUrl = url;
-  let requestBody = null;
-
-  if (method === 'GET') {
-    fetchUrl = buildUrlWithParams(url, formData);
-  } else {
-    const urlEncodedData = new URLSearchParams(formData);
-    requestBody = urlEncodedData.toString();
-  }
-
-  const response = await baseService(fetchUrl, method, requestBody);
-
-  handleProgress(loadingId, false, elementToHideId)
-
-  if (response.ok) {
-    const responseHtml = await response.text();
-    handleResponseLogic(logic, targetElement, responseHtml);
-
-    const feedbackMessage = response.headers.get(FEEDBACK_HEADER);
-    feedbackMessage && showSnackbar(feedbackMessage);
-
-    !retainInput && clearInputs(inputsAndButtons);
-
-    // Re-attach form listeners:
-    connectToDrivetrain();
-  } else {
-    const errorMessage = `Server response error: ${response.statusText}`
-    handleProgress(loadingId, false, elementToHideId)
-    showSnackbar(errorMessage);
-  }
-}
-
-const handleShifting = async (form) => {
-  const inputsAndButtons = form.querySelectorAll('input, button');
   const loadingId = form.getAttribute(LOADING_ATTR);
   const elementToHideId = form.getAttribute(HIDE_ONLOAD_ATTR);
+  const inputsAndButtons = form.querySelectorAll('input, button');
+
+  const targetElement = document.querySelector(targetId);
 
   lockInputs(inputsAndButtons, true);
   handleProgress(loadingId, true, elementToHideId)
 
   try {
-    await handleCablePull(form);
+    let fetchUrl = url;
+    let requestBody = null;
+
+    if (method === 'GET') {
+      fetchUrl = buildUrlWithParams(url, formData);
+    } else {
+      const urlEncodedData = new URLSearchParams(formData);
+      requestBody = urlEncodedData.toString();
+    }
+
+    const response = await baseService(fetchUrl, method, requestBody);
+
+    handleProgress(loadingId, false, elementToHideId)
+
+    if (response.ok) {
+      const responseHtml = await response.text();
+      handleResponseLogic(logic, targetElement, responseHtml);
+
+      const feedbackMessage = response.headers.get(FEEDBACK_HEADER);
+      feedbackMessage && showSnackbar(feedbackMessage);
+
+      !retainInput && clearInputs(inputsAndButtons);
+
+      // Re-attach form listeners:
+      connectToDrivetrain();
+    } else {
+      const errorMessage = `Server response error: ${response.statusText}`
+      handleProgress(loadingId, false, elementToHideId)
+      showSnackbar(errorMessage);
+    }
   } catch (error) {
     console.error('Fetch error:', error);
     showSnackbar("an error has occured!")
