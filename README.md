@@ -1,5 +1,9 @@
-![My animated logo](assets/brifter-logo.avif)
+<div align="center">
+  <img src="assets/brifter-logo.avif" alt="Brifter logo" width="150" height="150">
+</div>
 
-![My animated logo](assets/brifter-shifting.avif)
+![Brifter shifting](assets/brifter-shifting.avif)
 
-![My animated logo](assets/brifter-feedback.avif)
+![Brifter Derailleur](assets/brifter-derailleur.avif)
+
+![Brifter Feedback](assets/brifter-feedback.avif)
